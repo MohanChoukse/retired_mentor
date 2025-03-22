@@ -1,14 +1,20 @@
-
-import React from 'react';
-import { MainLayout } from '../components/layouts/MainLayout';
-import { Hero } from '../components/sections/Hero';
-import { Features } from '../components/sections/Features';
-import { Testimonials } from '../components/sections/Testimonials';
-import { ArrowRight, Brain, Compass, Globe, Lightbulb, Users } from 'lucide-react';
-import { CustomButton } from '../components/ui/custom-button';
-import { Link } from 'react-router-dom';
-import { useInView } from 'react-intersection-observer';
-import { cn } from '@/lib/utils';
+import React from "react";
+import { MainLayout } from "../components/layouts/MainLayout";
+import { Hero } from "../components/sections/Hero";
+import { Features } from "../components/sections/Features";
+import { Testimonials } from "../components/sections/Testimonials";
+import {
+  ArrowRight,
+  Brain,
+  Compass,
+  Globe,
+  Lightbulb,
+  Users,
+} from "lucide-react";
+import { CustomButton } from "../components/ui/custom-button";
+import { Link } from "react-router-dom";
+import { useInView } from "react-intersection-observer";
+import { cn } from "@/lib/utils";
 
 const Index = () => {
   // Use intersection observer hooks for animations
@@ -16,7 +22,7 @@ const Index = () => {
     triggerOnce: true,
     threshold: 0.1,
   });
-  
+
   const [categoriesRef, categoriesInView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -60,14 +66,14 @@ const Index = () => {
     <MainLayout withPadding={false}>
       {/* Hero Section */}
       <Hero />
-      
+
       {/* Features Section */}
       <Features />
-      
+
       {/* Categories Section */}
       <section className="py-20">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div 
+          <div
             ref={categoriesRef}
             className={cn(
               "text-center max-w-3xl mx-auto mb-16",
@@ -76,13 +82,15 @@ const Index = () => {
             )}
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Explore Expertise by <span className="text-primary">Category</span>
+              Explore Expertise by{" "}
+              <span className="text-primary">Category</span>
             </h2>
             <p className="text-xl text-muted-foreground">
-              Find mentors specializing in your area of interest from our diverse knowledge domains.
+              Find mentors specializing in your area of interest from our
+              diverse knowledge domains.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
             {categories.map((category, index) => (
               <Link
@@ -92,7 +100,7 @@ const Index = () => {
                   "flex flex-col items-center text-center p-6 rounded-xl border transition-all",
                   "hover:shadow-md hover:-translate-y-1 bg-card",
                   "opacity-0 transform translate-y-8",
-                  categoriesInView && "animate-reveal",
+                  categoriesInView && "animate-reveal"
                 )}
                 style={{ animationDelay: `${index * 100}ms` }}
               >
@@ -100,19 +108,21 @@ const Index = () => {
                   {category.icon}
                 </div>
                 <h3 className="font-semibold mb-1">{category.name}</h3>
-                <p className="text-sm text-muted-foreground">{category.count} Mentors</p>
+                <p className="text-sm text-muted-foreground">
+                  {category.count} Mentors
+                </p>
               </Link>
             ))}
           </div>
         </div>
       </section>
-      
+
       {/* Testimonials Section */}
       <Testimonials />
-      
+
       {/* CTA Section */}
       <section className="py-20 bg-gradient-hero text-white">
-        <div 
+        <div
           ref={ctaRef}
           className={cn(
             "container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center",
@@ -124,12 +134,13 @@ const Index = () => {
             Ready to Start Your Journey?
           </h2>
           <p className="text-xl opacity-90 max-w-2xl mx-auto mb-10">
-            Join thousands of professionals who have accelerated their careers through mentorship.
+            Join thousands of professionals who have accelerated their careers
+            through mentorship.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link to="/signup">
-              <CustomButton 
-                size="lg" 
+              <CustomButton
+                size="lg"
                 className="bg-white text-primary hover:bg-white/90 group"
               >
                 Get Started
@@ -137,10 +148,10 @@ const Index = () => {
               </CustomButton>
             </Link>
             <Link to="/mentors">
-              <CustomButton 
-                variant="outline" 
-                size="lg" 
-                className="border-white text-white hover:bg-white/10"
+              <CustomButton
+                variant="outline"
+                size="lg"
+                className="border-white bg-red text-white hover:text-black hover:bg-white/30 backdrop-blur-md"
               >
                 Browse Mentors
               </CustomButton>

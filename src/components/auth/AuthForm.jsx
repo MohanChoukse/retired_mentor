@@ -1,33 +1,38 @@
-
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { EyeIcon, EyeOffIcon } from 'lucide-react';
-import { CustomButton } from '../ui/custom-button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { cn } from '@/lib/utils';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { CustomButton } from "../ui/custom-button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
+// import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { GoogleLogin } from "@react-oauth/google";
+import { SocialLoginButtons } from "./SocialLoginButtons";
 
 export const AuthForm = ({
   type,
   onSubmit,
+  onGoogleLogin,
   isLoading = false,
 }) => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    ...(type === 'signup' ? { name: '', confirmPassword: '' } : {}),
+    email: "",
+    password: "",
+    ...(type === "signup"
+      ? { firstName: "", lastName: "", phone: "", age: "", confirmPassword: "" }
+      : {}),
   });
-  
+
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
     // Clear error when user starts typing
     if (errors[name]) {
-      setErrors(prev => {
+      setErrors((prev) => {
         const newErrors = { ...prev };
         delete newErrors[name];
         return newErrors;
@@ -37,63 +42,143 @@ export const AuthForm = ({
 
   const validate = () => {
     const newErrors = {};
-    
+
     if (!formData.email) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
+      newErrors.email = "Email is invalid";
     }
-    
+
     if (!formData.password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+      newErrors.password = "Password must be at least 6 characters";
     }
-    
-    if (type === 'signup') {
-      if (!formData.name) {
-        newErrors.name = 'Name is required';
+
+    if (type === "signup") {
+      if (!formData.firstName) {
+        newErrors.firstName = "First name is required";
       }
-      
+
+      if (!formData.lastName) {
+        newErrors.lastName = "Last name is required";
+      }
+
+      if (!formData.phone) {
+        newErrors.phone = "Phone number is required";
+      } else if (!/^\d{10}$/.test(formData.phone)) {
+        newErrors.phone = "Phone number must be 10 digits";
+      }
+
+      if (!formData.age) {
+        newErrors.age = "Age is required";
+      } else if (isNaN(formData.age) || formData.age < 18) {
+        newErrors.age = "Age must be 18 or older";
+      }
+
       if (formData.password !== formData.confirmPassword) {
-        newErrors.confirmPassword = 'Passwords do not match';
+        newErrors.confirmPassword = "Passwords do not match";
       }
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (validate()) {
       onSubmit(formData);
     }
   };
 
+  const handleGoogleSuccess = (token) => {
+    if (onGoogleLogin) {
+      onGoogleLogin(token);
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-md">
-      {type === 'signup' && (
-        <div className="space-y-2">
-          <Label htmlFor="name">Full Name</Label>
-          <Input
-            id="name"
-            name="name"
-            type="text"
-            autoComplete="name"
-            value={formData.name}
-            onChange={handleChange}
-            className={cn(errors.name && "border-destructive")}
-            placeholder="John Doe"
-            disabled={isLoading}
-          />
-          {errors.name && (
-            <p className="text-sm text-destructive">{errors.name}</p>
-          )}
-        </div>
+      {type === "signup" && (
+        <>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="firstName">First Name</Label>
+              <Input
+                id="firstName"
+                name="firstName"
+                type="text"
+                autoComplete="given-name"
+                value={formData.firstName}
+                onChange={handleChange}
+                className={cn(errors.firstName && "border-destructive")}
+                placeholder="Binod"
+                disabled={isLoading}
+              />
+              {errors.firstName && (
+                <p className="text-sm text-destructive">{errors.firstName}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="lastName">Last Name</Label>
+              <Input
+                id="lastName"
+                name="lastName"
+                type="text"
+                autoComplete="family-name"
+                value={formData.lastName}
+                onChange={handleChange}
+                className={cn(errors.lastName && "border-destructive")}
+                placeholder="Bhai"
+                disabled={isLoading}
+              />
+              {errors.lastName && (
+                <p className="text-sm text-destructive">{errors.lastName}</p>
+              )}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="phone">Phone Number </Label>
+            <Input
+              id="phone"
+              name="phone"
+              type="tel"
+              autoComplete="tel"
+              value={formData.phone}
+              onChange={handleChange}
+              className={cn(errors.phone && "border-destructive")}
+              placeholder="1234567890"
+              disabled={isLoading}
+            />
+            {errors.phone && (
+              <p className="text-sm text-destructive">{errors.phone}</p>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="age">Age</Label>
+            <Input
+              id="age"
+              name="age"
+              type="number"
+              min="18"
+              value={formData.age}
+              onChange={handleChange}
+              className={cn(errors.age && "border-destructive")}
+              placeholder="Enter your age"
+              disabled={isLoading}
+            />
+            {errors.age && (
+              <p className="text-sm text-destructive">{errors.age}</p>
+            )}
+          </div>
+        </>
       )}
-      
+
       <div className="space-y-2">
         <Label htmlFor="email">Email address</Label>
         <Input
@@ -104,20 +189,20 @@ export const AuthForm = ({
           value={formData.email}
           onChange={handleChange}
           className={cn(errors.email && "border-destructive")}
-          placeholder="john@example.com"
+          placeholder="bhai@example.com"
           disabled={isLoading}
         />
         {errors.email && (
           <p className="text-sm text-destructive">{errors.email}</p>
         )}
       </div>
-      
+
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <Label htmlFor="password">Password</Label>
-          {type === 'login' && (
-            <Link 
-              to="/forgot-password" 
+          {type === "login" && (
+            <Link
+              to="/forgot-password"
               className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
             >
               Forgot password?
@@ -129,7 +214,9 @@ export const AuthForm = ({
             id="password"
             name="password"
             type={showPassword ? "text" : "password"}
-            autoComplete={type === 'login' ? "current-password" : "new-password"}
+            autoComplete={
+              type === "login" ? "current-password" : "new-password"
+            }
             value={formData.password}
             onChange={handleChange}
             className={cn(errors.password && "border-destructive")}
@@ -153,8 +240,8 @@ export const AuthForm = ({
           <p className="text-sm text-destructive">{errors.password}</p>
         )}
       </div>
-      
-      {type === 'signup' && (
+
+      {type === "signup" && (
         <div className="space-y-2">
           <Label htmlFor="confirmPassword">Confirm Password</Label>
           <div className="relative">
@@ -175,16 +262,12 @@ export const AuthForm = ({
           )}
         </div>
       )}
-      
-      <CustomButton
-        type="submit"
-        isLoading={isLoading}
-        className="w-full"
-      >
-        {type === 'login' ? 'Sign In' : 'Create Account'}
+
+      <CustomButton type="submit" isLoading={isLoading} className="w-full">
+        {type === "login" ? "Sign In" : "Create Account"}
       </CustomButton>
-      
-      <div className="relative flex items-center justify-center">
+
+      {/* <div className="relative flex items-center justify-center">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />
         </div>
@@ -192,11 +275,11 @@ export const AuthForm = ({
           Or continue with
         </span>
       </div>
-      
-      <div className="grid grid-cols-3 gap-3">
+
+      <div className=" flex justify-center items-center h-screen">
         <button
           type="button"
-          className="flex items-center justify-center gap-2 h-10 rounded-md border bg-background shadow-sm hover:bg-muted transition-colors"
+          className="flex items-center justify-center gap-3  w-full h-10 rounded-md border bg-background shadow-sm hover:bg-muted transition-colors  "
           disabled={isLoading}
         >
           <svg viewBox="0 0 24 24" className="h-5 w-5">
@@ -217,6 +300,15 @@ export const AuthForm = ({
               fill="#EA4335"
             />
           </svg>
+          {/* <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              console.log(credentialResponse);
+            }}
+            onError={() => {
+              console.log("Login Failed");
+            }}
+          />
+          ; 
         </button>
         <button
           type="button"
@@ -241,15 +333,20 @@ export const AuthForm = ({
               fill="#000000"
             />
           </svg>
-        </button>
-      </div>
-      
+        </button> 
+      </div> */}
+
+      <SocialLoginButtons
+        isLoading={isLoading}
+        onGoogleSuccess={handleGoogleSuccess}
+      />
+
       <p className="text-center text-sm text-muted-foreground">
-        {type === 'login' ? (
+        {type === "login" ? (
           <>
-            Don't have an account?{' '}
-            <Link 
-              to="/signup" 
+            Don't have an account?{" "}
+            <Link
+              to="/signup"
               className="font-medium text-primary hover:text-primary/80 transition-colors"
             >
               Sign up
@@ -257,9 +354,9 @@ export const AuthForm = ({
           </>
         ) : (
           <>
-            Already have an account?{' '}
-            <Link 
-              to="/login" 
+            Already have an account?{" "}
+            <Link
+              to="/login"
               className="font-medium text-primary hover:text-primary/80 transition-colors"
             >
               Sign in
