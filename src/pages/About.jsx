@@ -19,9 +19,11 @@ import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { toast } from "sonner";
 import DecryptedText from "../components/DecryptedText";
+import { useAuth } from "../context/AuthContext";
 
 const About = () => {
   const navigate = useNavigate();
+  const { isAuthenticated, user } = useAuth();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -35,6 +37,20 @@ const About = () => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleFindMentor = () => {
+    if (isAuthenticated) {
+      // Navigate based on user type
+      if (user.userType === "Retired User") {
+        navigate("/retired-user-dashboard");
+      } else {
+        navigate("/retired-mentors");
+      }
+    } else {
+      // If not authenticated, redirect to login
+      navigate("/login");
+    }
   };
 
   // const handleSubmit = (e) => {
@@ -112,19 +128,8 @@ const About = () => {
             guidance
           </p>
           <div className="flex justify-center">
-            <CustomButton
-              onClick={() => navigate("/mentors")}
-              size="lg"
-              className="mr-4"
-            >
+            <CustomButton onClick={handleFindMentor} size="lg" className="mr-4">
               Find a Mentor
-            </CustomButton>
-            <CustomButton
-              onClick={() => navigate("/signup")}
-              variant="outline"
-              size="lg"
-            >
-              Become a Mentor
             </CustomButton>
           </div>
         </div>
@@ -358,10 +363,10 @@ const About = () => {
 
               <h3 className="text-xl font-bold mb-4">Office Hours</h3>
               <p className="text-muted-foreground mb-2">
-                Monday - Friday: 9:00 AM - 6:00 PM PST
+                <del> Monday - Friday: 9:00 AM - 6:00 PM PST</del>
               </p>
               <p className="text-muted-foreground mb-2 ">
-                Saturday - Sunday: Closed
+                <del>Saturday - Sunday: Closed</del> <br /> All Time Closed 🥱.
               </p>
             </div>
 

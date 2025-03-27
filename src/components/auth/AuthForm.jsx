@@ -114,7 +114,7 @@ export const AuthForm = ({
                 value={formData.firstName}
                 onChange={handleChange}
                 className={cn(errors.firstName && "border-destructive")}
-                placeholder="Binod"
+                placeholder="F name"
                 disabled={isLoading}
               />
               {errors.firstName && (
@@ -132,7 +132,7 @@ export const AuthForm = ({
                 value={formData.lastName}
                 onChange={handleChange}
                 className={cn(errors.lastName && "border-destructive")}
-                placeholder="Bhai"
+                placeholder="L name"
                 disabled={isLoading}
               />
               {errors.lastName && (

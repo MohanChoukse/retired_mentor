@@ -19,28 +19,6 @@ export const Footer = () => {
   return (
     <footer className="bg-gradient-to-b from-secondary/50 to-muted border-t">
       <div className="container max-w-7xl mx-auto">
-        {/* Newsletter Section */}
-        {/* <div className="py-10 px-4 border-b">
-          <div className="max-w-xl mx-auto md:mx-0">
-            <h3 className="text-lg font-semibold mb-2">Join our newsletter</h3>
-            <p className="text-sm text-muted-foreground mb-4">
-              Stay updated with the latest mentorship resources and
-              opportunities
-            </p>
-            <div className="flex flex-col sm:flex-row gap-2">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="px-4 py-2 rounded-md border flex-grow focus:outline-none focus:ring-2 focus:ring-primary/40"
-              />
-              <button className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
-                Subscribe
-                <ArrowRight className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-        </div> */}
-
         {/* Main Footer Content */}
         <div className="py-12 px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Column 1: About */}
@@ -221,7 +199,7 @@ export const Footer = () => {
             © {currentYear} RetiredMentor. All rights reserved.
           </p>
           <p className="text-sm text-muted-foreground flex items-center">
-            Made with ❤️ for retired professionals
+            Made with ❤️ for retired mentors
           </p>
         </div>
       </div>

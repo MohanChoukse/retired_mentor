@@ -13,7 +13,7 @@ export const Testimonials = () => {
   const testimonials = [
     {
       id: 1,
-      name: "Sarah Johnson",
+      name: "Ashi Patel",
       role: "Product Manager",
       company: "TechCorp",
       text: "Retired Mentor completely transformed my career. The mentorship I received helped me navigate complex challenges and accelerate my professional growth.",
@@ -22,7 +22,7 @@ export const Testimonials = () => {
     },
     {
       id: 2,
-      name: "Michael Chen",
+      name: "Karan Shah",
       role: "Software Engineer",
       company: "InnovateSoft",
       text: "Finding a mentor in my field was nearly impossible until I discovered Retired Mentor. The platform connected me with industry experts who provided invaluable guidance.",
@@ -31,7 +31,7 @@ export const Testimonials = () => {
     },
     {
       id: 3,
-      name: "Emily Rodriguez",
+      name: "Neha Gupta",
       role: "Marketing Director",
       company: "BrandGrowth",
       text: "The quality of mentors on Retired Mentor is exceptional. I've been able to learn from leaders in my industry and apply their insights to my own work.",
