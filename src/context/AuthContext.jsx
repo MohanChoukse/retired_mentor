@@ -29,18 +29,24 @@ export const AuthProvider = ({ children }) => {
 
   // Login function
   const login = (userData) => {
+    // Add an id field if it doesn't exist
+    const userWithId = {
+      ...userData,
+      id: userData.id || "user-" + Math.random().toString(36).substr(2, 9),
+    };
+
     // Store user data and auth status
-    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("user", JSON.stringify(userWithId));
     localStorage.setItem("isAuthenticated", "true");
 
     // Update state
-    setUser(userData);
+    setUser(userWithId);
     setIsAuthenticated(true);
 
     toast.success("Logged in successfully");
 
     // Redirect based on user type
-    if (userData.userType === "Retired User") {
+    if (userWithId.userType === "Retired User") {
       navigate("/retired-user-dashboard");
     } else {
       navigate("/retired-mentors");

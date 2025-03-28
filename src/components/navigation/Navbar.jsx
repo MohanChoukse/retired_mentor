@@ -159,7 +159,7 @@
 // };
 
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+// import { Link, useLocation } from "react-router-dom";
 import { Menu, X, LogOut, Bell, User, Edit } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CustomButton } from "../ui/custom-button";
@@ -173,12 +173,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
-
+  const navigate = useNavigate();
   const { isAuthenticated, logout, user, notifications } = useAuth();
   const notificationCount = notifications?.length || 0;
 
@@ -235,6 +236,10 @@ export const Navbar = () => {
 
   const handleViewNotification = (message) => {
     toast.info(message);
+  };
+
+  const handleViewProfile = () => {
+    navigate(`/profile/${user?.id || "default"}`);
   };
 
   return (
@@ -334,10 +339,16 @@ export const Navbar = () => {
                     <DropdownMenuSeparator />
                     {/* Show Edit Profile only for Retired Users */}
                     {user?.userType === "Retired User" && (
-                      <DropdownMenuItem onClick={handleEditProfile}>
-                        <Edit className="mr-2 h-4 w-4" />
-                        <span>Edit Profile</span>
-                      </DropdownMenuItem>
+                      <>
+                        <DropdownMenuItem onClick={handleViewProfile}>
+                          <User className="mr-2 h-4 w-4" />
+                          <span>View Profile</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleEditProfile}>
+                          <Edit className="mr-2 h-4 w-4" />
+                          <span>Edit Profile</span>
+                        </DropdownMenuItem>
+                      </>
                     )}
                     <DropdownMenuItem onClick={handleLogout}>
                       <LogOut className="mr-2 h-4 w-4" />
@@ -418,15 +429,21 @@ export const Navbar = () => {
                 </div>
 
                 {/* Mobile edit profile - only for Retired Users */}
-                {user?.userType === "Retired User" && (
-                  <div
-                    className="flex items-center px-3 py-2 cursor-pointer"
-                    onClick={handleEditProfile}
-                  >
-                    <Edit className="h-5 w-5 mr-2" />
-                    <span>Edit Profile</span>
-                  </div>
-                )}
+                <div
+                  className="flex items-center px-3 py-2 cursor-pointer"
+                  onClick={handleViewProfile}
+                >
+                  <User className="h-5 w-5 mr-2" />
+                  <span>View Profile</span>
+                </div>
+
+                <div
+                  className="flex items-center px-3 py-2 cursor-pointer"
+                  onClick={handleEditProfile}
+                >
+                  <Edit className="h-5 w-5 mr-2" />
+                  <span>Edit Profile</span>
+                </div>
                 {/* Mobile logout */}
                 <CustomButton
                   variant="outline"
