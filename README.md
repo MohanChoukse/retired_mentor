@@ -1,8 +1,8 @@
-<<<<<<< HEAD
 
-=======
+
+
 The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
->>>>>>> 010ef32 (add new mentor search page and new title icon)
+
 
 Follow these steps:
 
@@ -19,8 +19,4 @@ npm i
 # Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
-<<<<<<< HEAD
 
-
-=======
->>>>>>> 010ef32 (add new mentor search page and new title icon)
